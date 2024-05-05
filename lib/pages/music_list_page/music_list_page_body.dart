@@ -26,9 +26,9 @@ class MusicListPageBody extends HookConsumerWidget {
                     onTap: () {
                       ref
                           .read(musicListStateNotifierProvider.notifier)
-                          .tapMusic(index);
+                          .tapMusic(index, value[index]);
                     },
-                    child: const MusicCard()));
+                    child: MusicCard(index: index)));
           },
           itemCount: value.length,
           onReorder: (int oldIndex, int newIndex) {

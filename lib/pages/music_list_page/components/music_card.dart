@@ -4,7 +4,9 @@ import 'package:music_background_app/pages/music_list_page/provider/music_list_s
 import 'package:music_background_app/feature/music/provider/music_scoped_provider.dart';
 
 class MusicCard extends HookConsumerWidget {
-  const MusicCard({super.key});
+  const MusicCard({super.key, required this.index});
+
+  final int index;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -22,7 +24,7 @@ class MusicCard extends HookConsumerWidget {
         subtitle: Text(music.author),
         trailing: IconButton(
             onPressed: () {
-              // ref.read(musicListStateProvider.notifier).removeMusic(index);
+              ref.read(musicListStateNotifierProvider.notifier).removeMusic(index);
             },
             icon: const Icon(Icons.delete),
             color: Colors.red),

@@ -138,5 +138,9 @@ class MusicRepository {
     final path = myDirectory.path;
     final musicFile = File('$path/musics/$musicTitle');
     musicFile.deleteSync();
+
+    final list = await getListMusics();
+    final newData = list.where((element) => element.title != musicTitle).toList();
+    await saveListMusic(newData);
   }
 }

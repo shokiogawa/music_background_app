@@ -33,8 +33,11 @@ class MusicListState with _$MusicListState {
 }
 
 @riverpod
-class MusicListStateNotifier extends _$MusicListStateNotifier with WidgetsBindingObserver {
+class MusicListStateNotifier extends _$MusicListStateNotifier
+    with WidgetsBindingObserver {
   MusicListState? get value => state.value;
+
+  MyAudioHandler get handler => ref.watch(myAudioHandlerProvider);
 
   @override
   Future<MusicListState> build() async {
@@ -48,7 +51,7 @@ class MusicListStateNotifier extends _$MusicListStateNotifier with WidgetsBindin
     final List<MediaItem> mediaItems = musicList
         .map((music) => MediaItem(id: music.title, title: music.title))
         .toList();
-    (await ref.watch(audioHandlerProvider.future)).addQueueItems(mediaItems);
+    await ref.watch(myAudioHandlerProvider).addQueueItems(mediaItems);
     _listenToBufferedPosition();
     _listenToChangeMusic();
     _listenToCurrentPosition();
@@ -61,8 +64,9 @@ class MusicListStateNotifier extends _$MusicListStateNotifier with WidgetsBindin
     AudioService.position.listen((position) {
       final newState = ProgressBarState(
           current: position,
-          buffered: value!.progressBarState.buffered,
-          total: value!.progressBarState.total);
+          buffered:
+              value?.progressBarState.buffered ?? const Duration(seconds: 0),
+          total: value?.progressBarState.total ?? const Duration(seconds: 0));
       update((value) {
         value = value.copyWith(progressBarState: newState);
         return value;
@@ -70,14 +74,13 @@ class MusicListStateNotifier extends _$MusicListStateNotifier with WidgetsBindin
     });
   }
 
-  Future<void> _listenToBufferedPosition() async {
-    (await ref.watch(audioHandlerProvider.future))
-        .playbackState
-        .listen((playbackState) {
+  void _listenToBufferedPosition() {
+    handler.playbackState.listen((playbackState) {
       final newState = ProgressBarState(
-          current: value!.progressBarState.current,
+          current:
+              value?.progressBarState.current ?? const Duration(seconds: 0),
           buffered: playbackState.bufferedPosition,
-          total: value!.progressBarState.total);
+          total: value?.progressBarState.total ?? const Duration(seconds: 0));
 
       update((value) {
         value = value.copyWith(progressBarState: newState);
@@ -86,13 +89,13 @@ class MusicListStateNotifier extends _$MusicListStateNotifier with WidgetsBindin
     });
   }
 
-  Future<void> _listenToTotalDuration() async {
-    (await ref.watch(audioHandlerProvider.future))
-        .mediaItem
-        .listen((mediaItem) {
+  void _listenToTotalDuration() {
+    handler.mediaItem.listen((mediaItem) {
       final newState = ProgressBarState(
-          current: value!.progressBarState.current,
-          buffered: value!.progressBarState.buffered,
+          current:
+              value?.progressBarState.current ?? const Duration(seconds: 0),
+          buffered:
+              value?.progressBarState.buffered ?? const Duration(seconds: 0),
           total: mediaItem?.duration ?? Duration.zero);
 
       update((value) {
@@ -102,8 +105,8 @@ class MusicListStateNotifier extends _$MusicListStateNotifier with WidgetsBindin
     });
   }
 
-  Future<void> _listenToChangeMusic() async {
-    (await ref.watch(audioHandlerProvider.future)).mediaItem.listen((value) {
+  void _listenToChangeMusic() {
+    handler.mediaItem.listen((value) {
       update((value) {
         value = value.copyWith(musicTitle: value.musicTitle ?? "");
         return value;
@@ -111,10 +114,8 @@ class MusicListStateNotifier extends _$MusicListStateNotifier with WidgetsBindin
     });
   }
 
-  Future<void> _listenToIsPlay() async {
-    (await ref.watch(audioHandlerProvider.future))
-        .playbackState
-        .listen((backState) {
+  void _listenToIsPlay() {
+    handler.playbackState.listen((backState) {
       update((value) {
         value = value.copyWith(isPlaying: backState.playing);
         return value;
@@ -127,32 +128,35 @@ class MusicListStateNotifier extends _$MusicListStateNotifier with WidgetsBindin
     value!.musicList.insert(newIndex, moveMusic);
     final moveMediaItem =
         MediaItem(id: moveMusic.title, title: moveMusic.title);
-    await (await ref.watch(audioHandlerProvider.future))
-        .changeMusicOrder(newIndex, oldIndex, moveMediaItem);
+    await handler.changeMusicOrder(newIndex, oldIndex, moveMediaItem);
   }
 
-  Future<void> tapMusic(int index) async {
-    await (await ref.watch(audioHandlerProvider.future)).tapMusic(index);
+  Future<void> tapMusic(int index, Music selectMusic) async {
+    update((value) {
+      value = value.copyWith(musicTitle: selectMusic.title);
+      return value;
+    });
+    await handler.tapMusic(index);
   }
 
   Future<void> play() async {
-    await (await ref.watch(audioHandlerProvider.future)).play();
+    await handler.play();
   }
 
   Future<void> stop() async {
-    (await ref.watch(audioHandlerProvider.future)).stop();
+    handler.stop();
   }
 
   Future<void> pause() async {
-    (await ref.watch(audioHandlerProvider.future)).pause();
+    handler.pause();
   }
 
   Future<void> skipToNext() async {
-    (await ref.watch(audioHandlerProvider.future)).skipToNext();
+    handler.skipToNext();
   }
 
   Future<void> skipToPrevious() async {
-    (await ref.watch(audioHandlerProvider.future)).skipToPrevious();
+    handler.skipToPrevious();
   }
 
   Future<void> addQueueItems() async {
@@ -160,11 +164,11 @@ class MusicListStateNotifier extends _$MusicListStateNotifier with WidgetsBindin
     final List<MediaItem> mediaItems = musicList
         .map((music) => MediaItem(id: music.title, title: music.title))
         .toList();
-    (await ref.watch(audioHandlerProvider.future)).addQueueItems(mediaItems);
+    handler.addQueueItems(mediaItems);
   }
 
   Future<void> clear() async {
-    (await ref.watch(audioHandlerProvider.future)).clear();
+    handler.clear();
   }
 
   //Musicデータフェッチ
@@ -173,41 +177,30 @@ class MusicListStateNotifier extends _$MusicListStateNotifier with WidgetsBindin
     final List<MediaItem> mediaItems = musicList
         .map((music) => MediaItem(id: music.title, title: music.title))
         .toList();
-    await (await ref.watch(audioHandlerProvider.future))
-        .setPlayList(mediaItems);
-  }
-
-  // 音楽追加
-  Future<void> downLoadMusic(String url) async {
-    state = const AsyncLoading<MusicListState>().copyWithPrevious(state);
-    state = await AsyncValue.guard(() async {
-      await ref.watch(musicRepositoryProvider).download(url);
-      return _future();
-    });
-    ref.invalidate(musicListStateNotifierProvider);
+    await handler.setPlayList(mediaItems);
   }
 
   // 削除
   Future<void> removeMusic(int index) async {
     //queueから音楽を削除
-    await (await ref.watch(audioHandlerProvider.future))
-        .removeQueueItemAt(index);
+    await handler.removeQueueItemAt(index);
 
     ref
         .watch(musicRepositoryProvider)
         .deleteMusic(value!.musicList[index].title);
 
     ref.invalidate(getMusicListProvider);
+    ref.invalidateSelf();
   }
 
   Future<void> seek(Duration position) async {
-    (await ref.watch(audioHandlerProvider.future)).seek(position);
+    handler.seek(position);
   }
 
   @override
   Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
     if (state == AppLifecycleState.detached) {
-      (await ref.watch(audioHandlerProvider.future)).stop();
+      handler.stop();
     }
   }
 }

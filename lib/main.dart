@@ -5,18 +5,18 @@ import 'package:music_background_app/common/provider/audio_handler_provider.dart
 import 'package:music_background_app/pages/music_list_page/music_list_page.dart';
 import 'package:music_background_app/pages/video_search_page/video_search_page.dart';
 
-void main() async{
-  // final audioHandler = await AudioService.init(
-  //     builder: () => AudioHandler(ref),
-  //     config: const AudioServiceConfig(
-  //       androidNotificationChannelId: 'com.rereca',
-  //       androidNotificationChannelName: 'Rereca',
-  //       androidNotificationOngoing: true,
-  //       androidStopForegroundOnPause: true,
-  //     ));
-  runApp(const ProviderScope(
-    // overrides: [audioHandlerProvider.overrideWithValue()],
-      child: MyApp()));
+void main() async {
+  final handler = await AudioService.init(
+      builder: () => MyAudioHandler(),
+      config: const AudioServiceConfig(
+        androidNotificationChannelId: 'com.music_back_app',
+        androidNotificationChannelName: 'MusicBackApp',
+        androidNotificationOngoing: true,
+        androidStopForegroundOnPause: true,
+      ));
+  runApp(ProviderScope(
+      overrides: [myAudioHandlerProvider.overrideWithValue(handler)],
+      child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {

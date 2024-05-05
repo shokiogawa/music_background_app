@@ -7,7 +7,7 @@ part of 'music_list_state_provider.dart';
 // **************************************************************************
 
 String _$musicListStateNotifierHash() =>
-    r'ed99b989ae665ad48a9d67d2adc37283e9e63bef';
+    r'a6b1b41d5490ecf993f982b220219574286d2f8c';
 
 /// See also [MusicListStateNotifier].
 @ProviderFor(MusicListStateNotifier)

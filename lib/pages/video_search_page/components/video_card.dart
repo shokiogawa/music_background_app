@@ -14,7 +14,9 @@ class VideoCard extends HookConsumerWidget {
         showDialog(
             context: context,
             builder: (BuildContext context) {
-              return VideoDownloadDialog(url: video.url);
+              return ProviderScope(
+                  overrides: [videoScopedProvider.overrideWithValue(video)],
+                  child: const VideoDownloadDialog());
             });
         // notifier.downLoadMusic(_video.url);
       },

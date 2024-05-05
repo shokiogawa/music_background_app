@@ -20,6 +20,8 @@ class VideoSearchPageBody extends HookConsumerWidget {
                 videoScopedProvider.overrideWithValue(value[index])
               ], child: const VideoCard());
             });
+      case AsyncError(:final error, :final stackTrace):
+        return Center(child: Text(error.toString()));
       default:
         return const Center(child: CircularProgressIndicator());
     }

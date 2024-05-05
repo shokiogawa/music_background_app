@@ -1,47 +1,71 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:music_background_app/feature/music/provider/down_load_music_provider.dart';
 import 'package:music_background_app/pages/music_list_page/provider/music_list_state_provider.dart';
 
-class VideoDownloadDialog extends HookConsumerWidget {
-  const VideoDownloadDialog({super.key, required this.url});
+import '../../../feature/video/provider/video_scoped_provider.dart';
 
-  final String url;
+class VideoDownloadDialog extends HookConsumerWidget {
+  const VideoDownloadDialog({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final asyncValue = ref.watch(musicListStateNotifierProvider);
+    final url = ref.watch(videoScopedProvider).url;
+    final asyncValue = ref.watch(downLoadMusicProvider);
+    final isSuccess = useState(false);
+    ref.listen(downLoadMusicProvider, (previous, next) {
+      if (next.hasError) {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text(next.error.toString())));
+      }
+    });
     switch (asyncValue) {
-      case (AsyncData(:final value)):
+      case (AsyncData(:final value, isLoading: false)):
         return SimpleDialog(
-          title: const Text("ダウンロードしますか？"),
+          title: isSuccess.value
+              ? const Text("ダウンロードに成功しました。")
+              : const Text("ダウンロードしますか？"),
           children: [
             Column(
               children: [
                 ElevatedButton(
                     onPressed: () async {
-                      await ref
-                          .read(musicListStateNotifierProvider.notifier)
-                          .downLoadMusic(url);
+                      if (isSuccess.value) {
+                        Navigator.of(context).pop();
+                      } else {
+                        await ref
+                            .read(downLoadMusicProvider.notifier)
+                            .invoke(url)
+                            .then((value) => isSuccess.value = true);
+                      }
                     },
-                    child: const Text("ダウンロード"))
+                    child: isSuccess.value
+                        ? const Text("戻る")
+                        : const Text("ダウンロード"))
               ],
             )
           ],
         );
-      case (AsyncError()):
+      case (AsyncError(:final error)):
+        return SimpleDialog(
+          title: const Text("エラーが発生しました。"),
+          children: [
+            ElevatedButton(
+                onPressed: () async {
+                  Navigator.of(context).pop();
+                },
+                child: const Text("戻る"))
+          ],
+        );
+      case AsyncData(isLoading: true):
         return const SimpleDialog(
-          title: Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Text("エラーが発生しました。"),
-          ),
+          title: Text("ダウンロード中..."),
+          children: [Center(child: CircularProgressIndicator())],
         );
       default:
         return const SimpleDialog(
-          title: Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Text("ダウンロード中。。。"),
-          ),
+          children: [Text("ダウンロード中。。。")],
         );
     }
   }

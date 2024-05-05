@@ -2,30 +2,22 @@ import 'package:audio_service/audio_service.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:music_background_app/common/provider/app_directory_provider.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'audio_handler_provider.g.dart';
 
 
-@Riverpod(keepAlive: true)
-Future<AudioHandler> audioHandler(AudioHandlerRef ref) async{
-  final handler = await AudioService.init(
-      builder: () => AudioHandler(ref),
-      config: const AudioServiceConfig(
-        androidNotificationChannelId: 'com.music_back_app',
-        androidNotificationChannelName: 'MusicBackApp',
-        androidNotificationOngoing: true,
-        androidStopForegroundOnPause: true,
-      ));
-  return handler;
+@riverpod
+MyAudioHandler myAudioHandler(MyAudioHandlerRef ref){
+  throw UnimplementedError();
 }
 
-class AudioHandler extends BaseAudioHandler with SeekHandler {
-  final Ref ref;
+class MyAudioHandler extends BaseAudioHandler with SeekHandler {
   final player = AudioPlayer();
   final playList = ConcatenatingAudioSource(children: []);
 
-  AudioHandler(this.ref) {
+  MyAudioHandler() {
     _notifyAudioHandlerAboutPlaybackEvents();
     _loadEmptyPlaylist();
     _listenForDurationChanges();
@@ -193,7 +185,7 @@ class AudioHandler extends BaseAudioHandler with SeekHandler {
   }
 
   Future<UriAudioSource> _createAudioSource(String musicName) async {
-    final directory = await ref.watch(appDirectoryProvider.future);
+    final directory = await getApplicationDocumentsDirectory();
     String path = directory.path;
     String musicPath = '$path/musics/$musicName';
     return AudioSource.uri(Uri.file(musicPath));

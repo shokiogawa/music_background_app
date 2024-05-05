@@ -12,10 +12,11 @@ class MusicListPageBottomNavigationBar extends HookConsumerWidget {
     final asyncValue = ref.watch(musicListStateNotifierProvider);
     switch (asyncValue) {
       case AsyncValue(:final value):
-        return Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: SizedBox(
-            height: 200,
+        return Container(
+          color: Colors.orange,
+          height: MediaQuery.of(context).size.height / 5,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
             child: Column(
               children: [
                 Text(value?.musicTitle ?? ""),

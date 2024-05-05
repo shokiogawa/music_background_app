@@ -1,6 +1,6 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../feature/music/model/music.dart';
+import '../model/music.dart';
 
 part 'music_scoped_provider.g.dart';
 

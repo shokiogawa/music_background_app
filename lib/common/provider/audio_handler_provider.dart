@@ -6,9 +6,18 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'audio_handler_provider.g.dart';
 
-@riverpod
-AudioHandler audioHandler(AudioHandlerRef ref) {
-  return AudioHandler(ref);
+
+@Riverpod(keepAlive: true)
+Future<AudioHandler> audioHandler(AudioHandlerRef ref) async{
+  final handler = await AudioService.init(
+      builder: () => AudioHandler(ref),
+      config: const AudioServiceConfig(
+        androidNotificationChannelId: 'com.music_back_app',
+        androidNotificationChannelName: 'MusicBackApp',
+        androidNotificationOngoing: true,
+        androidStopForegroundOnPause: true,
+      ));
+  return handler;
 }
 
 class AudioHandler extends BaseAudioHandler with SeekHandler {

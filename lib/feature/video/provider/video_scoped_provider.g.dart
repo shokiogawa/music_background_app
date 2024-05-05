@@ -1,24 +1,24 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'audio_handler_provider.dart';
+part of 'video_scoped_provider.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$audioHandlerHash() => r'1c3d799810e83bf14453d9d5f42ff8c5850d54a6';
+String _$videoScopedHash() => r'c70328ed79cdd66c1072df0ad4653425078c3db5';
 
-/// See also [audioHandler].
-@ProviderFor(audioHandler)
-final audioHandlerProvider = FutureProvider<AudioHandler>.internal(
-  audioHandler,
-  name: r'audioHandlerProvider',
+/// See also [videoScoped].
+@ProviderFor(videoScoped)
+final videoScopedProvider = AutoDisposeProvider<VideoModel>.internal(
+  videoScoped,
+  name: r'videoScopedProvider',
   debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$audioHandlerHash,
+      const bool.fromEnvironment('dart.vm.product') ? null : _$videoScopedHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef AudioHandlerRef = FutureProviderRef<AudioHandler>;
+typedef VideoScopedRef = AutoDisposeProviderRef<VideoModel>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

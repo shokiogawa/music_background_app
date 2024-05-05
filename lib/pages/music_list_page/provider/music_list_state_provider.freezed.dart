@@ -170,22 +170,22 @@ abstract class _ProgressBarState implements ProgressBarState {
 }
 
 /// @nodoc
-mixin _$MusicState {
+mixin _$MusicListState {
   List<Music> get musicList => throw _privateConstructorUsedError;
   ProgressBarState get progressBarState => throw _privateConstructorUsedError;
   String get musicTitle => throw _privateConstructorUsedError;
   bool get isPlaying => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
-  $MusicStateCopyWith<MusicState> get copyWith =>
+  $MusicListStateCopyWith<MusicListState> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $MusicStateCopyWith<$Res> {
-  factory $MusicStateCopyWith(
-          MusicState value, $Res Function(MusicState) then) =
-      _$MusicStateCopyWithImpl<$Res, MusicState>;
+abstract class $MusicListStateCopyWith<$Res> {
+  factory $MusicListStateCopyWith(
+          MusicListState value, $Res Function(MusicListState) then) =
+      _$MusicListStateCopyWithImpl<$Res, MusicListState>;
   @useResult
   $Res call(
       {List<Music> musicList,
@@ -197,9 +197,9 @@ abstract class $MusicStateCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$MusicStateCopyWithImpl<$Res, $Val extends MusicState>
-    implements $MusicStateCopyWith<$Res> {
-  _$MusicStateCopyWithImpl(this._value, this._then);
+class _$MusicListStateCopyWithImpl<$Res, $Val extends MusicListState>
+    implements $MusicListStateCopyWith<$Res> {
+  _$MusicListStateCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
@@ -244,11 +244,11 @@ class _$MusicStateCopyWithImpl<$Res, $Val extends MusicState>
 }
 
 /// @nodoc
-abstract class _$$MusicStateImplCopyWith<$Res>
-    implements $MusicStateCopyWith<$Res> {
-  factory _$$MusicStateImplCopyWith(
-          _$MusicStateImpl value, $Res Function(_$MusicStateImpl) then) =
-      __$$MusicStateImplCopyWithImpl<$Res>;
+abstract class _$$MusicListStateImplCopyWith<$Res>
+    implements $MusicListStateCopyWith<$Res> {
+  factory _$$MusicListStateImplCopyWith(_$MusicListStateImpl value,
+          $Res Function(_$MusicListStateImpl) then) =
+      __$$MusicListStateImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -262,11 +262,11 @@ abstract class _$$MusicStateImplCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$MusicStateImplCopyWithImpl<$Res>
-    extends _$MusicStateCopyWithImpl<$Res, _$MusicStateImpl>
-    implements _$$MusicStateImplCopyWith<$Res> {
-  __$$MusicStateImplCopyWithImpl(
-      _$MusicStateImpl _value, $Res Function(_$MusicStateImpl) _then)
+class __$$MusicListStateImplCopyWithImpl<$Res>
+    extends _$MusicListStateCopyWithImpl<$Res, _$MusicListStateImpl>
+    implements _$$MusicListStateImplCopyWith<$Res> {
+  __$$MusicListStateImplCopyWithImpl(
+      _$MusicListStateImpl _value, $Res Function(_$MusicListStateImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -277,7 +277,7 @@ class __$$MusicStateImplCopyWithImpl<$Res>
     Object? musicTitle = null,
     Object? isPlaying = null,
   }) {
-    return _then(_$MusicStateImpl(
+    return _then(_$MusicListStateImpl(
       musicList: null == musicList
           ? _value._musicList
           : musicList // ignore: cast_nullable_to_non_nullable
@@ -300,8 +300,8 @@ class __$$MusicStateImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$MusicStateImpl implements _MusicState {
-  const _$MusicStateImpl(
+class _$MusicListStateImpl implements _MusicListState {
+  const _$MusicListStateImpl(
       {final List<Music> musicList = const [],
       this.progressBarState = const ProgressBarState(
           current: Duration.zero,
@@ -332,14 +332,14 @@ class _$MusicStateImpl implements _MusicState {
 
   @override
   String toString() {
-    return 'MusicState(musicList: $musicList, progressBarState: $progressBarState, musicTitle: $musicTitle, isPlaying: $isPlaying)';
+    return 'MusicListState(musicList: $musicList, progressBarState: $progressBarState, musicTitle: $musicTitle, isPlaying: $isPlaying)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$MusicStateImpl &&
+            other is _$MusicListStateImpl &&
             const DeepCollectionEquality()
                 .equals(other._musicList, _musicList) &&
             (identical(other.progressBarState, progressBarState) ||
@@ -361,16 +361,17 @@ class _$MusicStateImpl implements _MusicState {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$MusicStateImplCopyWith<_$MusicStateImpl> get copyWith =>
-      __$$MusicStateImplCopyWithImpl<_$MusicStateImpl>(this, _$identity);
+  _$$MusicListStateImplCopyWith<_$MusicListStateImpl> get copyWith =>
+      __$$MusicListStateImplCopyWithImpl<_$MusicListStateImpl>(
+          this, _$identity);
 }
 
-abstract class _MusicState implements MusicState {
-  const factory _MusicState(
+abstract class _MusicListState implements MusicListState {
+  const factory _MusicListState(
       {final List<Music> musicList,
       final ProgressBarState progressBarState,
       final String musicTitle,
-      final bool isPlaying}) = _$MusicStateImpl;
+      final bool isPlaying}) = _$MusicListStateImpl;
 
   @override
   List<Music> get musicList;
@@ -382,6 +383,6 @@ abstract class _MusicState implements MusicState {
   bool get isPlaying;
   @override
   @JsonKey(ignore: true)
-  _$$MusicStateImplCopyWith<_$MusicStateImpl> get copyWith =>
+  _$$MusicListStateImplCopyWith<_$MusicListStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

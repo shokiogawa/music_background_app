@@ -6,21 +6,22 @@ part of 'music_list_state_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$musicListStateHash() => r'8d22115e58374bcb04066cc6ffb29677523bdcaf';
+String _$musicListStateNotifierHash() =>
+    r'ed99b989ae665ad48a9d67d2adc37283e9e63bef';
 
-/// See also [MusicListState].
-@ProviderFor(MusicListState)
-final musicListStateProvider =
-    AutoDisposeAsyncNotifierProvider<MusicListState, MusicState>.internal(
-  MusicListState.new,
-  name: r'musicListStateProvider',
+/// See also [MusicListStateNotifier].
+@ProviderFor(MusicListStateNotifier)
+final musicListStateNotifierProvider = AutoDisposeAsyncNotifierProvider<
+    MusicListStateNotifier, MusicListState>.internal(
+  MusicListStateNotifier.new,
+  name: r'musicListStateNotifierProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$musicListStateHash,
+      : _$musicListStateNotifierHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$MusicListState = AutoDisposeAsyncNotifier<MusicState>;
+typedef _$MusicListStateNotifier = AutoDisposeAsyncNotifier<MusicListState>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
